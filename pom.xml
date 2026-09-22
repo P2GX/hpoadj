@@ -1,0 +1,140 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project xmlns="http://maven.apache.org/POM/4.0.0"
+         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+    <modelVersion>4.0.0</modelVersion>
+
+    <groupId>org.p2gx</groupId>
+    <artifactId>hpoadj</artifactId>
+    <version>0.0.1</version>
+    <packaging>pom</packaging>
+
+    <name>hpoadj</name>
+    <description>Adjusts HPO annotation files for phenopacket-based benchmarking: cohort augmentation and leave-one-publication-out.</description>
+    <url>https://github.com/P2GX/hpoadj</url>
+
+    <licenses>
+        <license>
+            <name>Apache License, Version 2.0</name>
+            <url>https://www.apache.org/licenses/LICENSE-2.0</url>
+        </license>
+    </licenses>
+
+    <developers>
+        <developer>
+            <name>Adam Graefe</name>
+            <url>https://orcid.org/0009-0004-8124-8864</url>
+        </developer>
+    </developers>
+
+    <scm>
+        <url>https://github.com/P2GX/hpoadj</url>
+        <connection>scm:git:https://github.com/P2GX/hpoadj.git</connection>
+    </scm>
+
+    <modules>
+        <module>hpoadj-core</module>
+        <module>hpoadj-cli</module>
+    </modules>
+
+    <properties>
+        <maven.compiler.release>21</maven.compiler.release>
+        <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+        <project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
+        <phenol.version>2.1.1</phenol.version>
+        <phenopacket-schema.version>2.0.2</phenopacket-schema.version>
+        <protobuf.version>3.21.12</protobuf.version>
+        <picocli.version>4.7.6</picocli.version>
+        <slf4j.version>2.0.12</slf4j.version>
+        <logback.version>1.5.6</logback.version>
+        <junit.version>5.11.4</junit.version>
+    </properties>
+
+    <dependencyManagement>
+        <dependencies>
+            <dependency>
+                <groupId>org.p2gx</groupId>
+                <artifactId>hpoadj-core</artifactId>
+                <version>${project.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>org.monarchinitiative.phenol</groupId>
+                <artifactId>phenol-core</artifactId>
+                <version>${phenol.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>org.monarchinitiative.phenol</groupId>
+                <artifactId>phenol-io</artifactId>
+                <version>${phenol.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>org.phenopackets</groupId>
+                <artifactId>phenopacket-schema</artifactId>
+                <version>${phenopacket-schema.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>com.google.protobuf</groupId>
+                <artifactId>protobuf-java-util</artifactId>
+                <version>${protobuf.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>info.picocli</groupId>
+                <artifactId>picocli</artifactId>
+                <version>${picocli.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>org.slf4j</groupId>
+                <artifactId>slf4j-api</artifactId>
+                <version>${slf4j.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>ch.qos.logback</groupId>
+                <artifactId>logback-classic</artifactId>
+                <version>${logback.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>org.junit.jupiter</groupId>
+                <artifactId>junit-jupiter</artifactId>
+                <version>${junit.version}</version>
+                <scope>test</scope>
+            </dependency>
+        </dependencies>
+    </dependencyManagement>
+
+    <build>
+        <pluginManagement>
+            <plugins>
+                <plugin>
+                    <groupId>org.apache.maven.plugins</groupId>
+                    <artifactId>maven-compiler-plugin</artifactId>
+                    <version>3.13.0</version>
+                </plugin>
+                <plugin>
+                    <groupId>org.apache.maven.plugins</groupId>
+                    <artifactId>maven-surefire-plugin</artifactId>
+                    <version>3.5.2</version>
+                </plugin>
+                <plugin>
+                    <groupId>org.apache.maven.plugins</groupId>
+                    <artifactId>maven-jar-plugin</artifactId>
+                    <version>3.4.2</version>
+                </plugin>
+                <plugin>
+                    <groupId>org.apache.maven.plugins</groupId>
+                    <artifactId>maven-shade-plugin</artifactId>
+                    <version>3.6.0</version>
+                </plugin>
+                <plugin>
+                    <groupId>org.apache.maven.plugins</groupId>
+                    <artifactId>maven-source-plugin</artifactId>
+                    <version>3.3.0</version>
+                </plugin>
+                <plugin>
+                    <groupId>org.apache.maven.plugins</groupId>
+                    <artifactId>maven-javadoc-plugin</artifactId>
+                    <version>3.11.2</version>
+                </plugin>
+            </plugins>
+        </pluginManagement>
+    </build>
+</project>
