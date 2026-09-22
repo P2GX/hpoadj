@@ -1,0 +1,155 @@
+{
+ "graphs": [
+  {
+   "id": "http://purl.obolibrary.org/obo/hp.json",
+   "meta": {
+    "version": "http://purl.obolibrary.org/obo/hp/releases/2026-06-23/hp.json",
+    "basicPropertyValues": [
+     {
+      "pred": "http://www.w3.org/2002/07/owl#versionInfo",
+      "val": "2026-06-23"
+     }
+    ]
+   },
+   "nodes": [
+    {
+     "id": "http://purl.obolibrary.org/obo/HP_0000001",
+     "lbl": "All",
+     "type": "CLASS"
+    },
+    {
+     "id": "http://purl.obolibrary.org/obo/HP_0000005",
+     "lbl": "Mode of inheritance",
+     "type": "CLASS"
+    },
+    {
+     "id": "http://purl.obolibrary.org/obo/HP_0000006",
+     "lbl": "Autosomal dominant inheritance",
+     "type": "CLASS"
+    },
+    {
+     "id": "http://purl.obolibrary.org/obo/HP_0000118",
+     "lbl": "Phenotypic abnormality",
+     "type": "CLASS"
+    },
+    {
+     "id": "http://purl.obolibrary.org/obo/HP_0002715",
+     "lbl": "Abnormality of the immune system",
+     "type": "CLASS"
+    },
+    {
+     "id": "http://purl.obolibrary.org/obo/HP_0002719",
+     "lbl": "Recurrent infections",
+     "type": "CLASS"
+    },
+    {
+     "id": "http://purl.obolibrary.org/obo/HP_0002205",
+     "lbl": "Recurrent respiratory infections",
+     "type": "CLASS"
+    },
+    {
+     "id": "http://purl.obolibrary.org/obo/HP_0005403",
+     "lbl": "Recurrent sinopulmonary infections",
+     "type": "CLASS"
+    },
+    {
+     "id": "http://purl.obolibrary.org/obo/HP_0005425",
+     "lbl": "Recurrent viral infections",
+     "type": "CLASS"
+    },
+    {
+     "id": "http://purl.obolibrary.org/obo/HP_0004313",
+     "lbl": "Decreased circulating antibody concentration",
+     "type": "CLASS"
+    },
+    {
+     "id": "http://purl.obolibrary.org/obo/HP_0001507",
+     "lbl": "Growth abnormality",
+     "type": "CLASS"
+    },
+    {
+     "id": "http://purl.obolibrary.org/obo/HP_0001510",
+     "lbl": "Growth delay",
+     "type": "CLASS"
+    },
+    {
+     "id": "http://purl.obolibrary.org/obo/HP_0001945",
+     "lbl": "Fever",
+     "type": "CLASS"
+    },
+    {
+     "id": "http://purl.obolibrary.org/obo/HP_0002960",
+     "lbl": "Autoimmunity",
+     "type": "CLASS"
+    }
+   ],
+   "edges": [
+    {
+     "sub": "http://purl.obolibrary.org/obo/HP_0000005",
+     "pred": "is_a",
+     "obj": "http://purl.obolibrary.org/obo/HP_0000001"
+    },
+    {
+     "sub": "http://purl.obolibrary.org/obo/HP_0000006",
+     "pred": "is_a",
+     "obj": "http://purl.obolibrary.org/obo/HP_0000005"
+    },
+    {
+     "sub": "http://purl.obolibrary.org/obo/HP_0000118",
+     "pred": "is_a",
+     "obj": "http://purl.obolibrary.org/obo/HP_0000001"
+    },
+    {
+     "sub": "http://purl.obolibrary.org/obo/HP_0002715",
+     "pred": "is_a",
+     "obj": "http://purl.obolibrary.org/obo/HP_0000118"
+    },
+    {
+     "sub": "http://purl.obolibrary.org/obo/HP_0002719",
+     "pred": "is_a",
+     "obj": "http://purl.obolibrary.org/obo/HP_0002715"
+    },
+    {
+     "sub": "http://purl.obolibrary.org/obo/HP_0002205",
+     "pred": "is_a",
+     "obj": "http://purl.obolibrary.org/obo/HP_0002719"
+    },
+    {
+     "sub": "http://purl.obolibrary.org/obo/HP_0005403",
+     "pred": "is_a",
+     "obj": "http://purl.obolibrary.org/obo/HP_0002205"
+    },
+    {
+     "sub": "http://purl.obolibrary.org/obo/HP_0005425",
+     "pred": "is_a",
+     "obj": "http://purl.obolibrary.org/obo/HP_0002719"
+    },
+    {
+     "sub": "http://purl.obolibrary.org/obo/HP_0004313",
+     "pred": "is_a",
+     "obj": "http://purl.obolibrary.org/obo/HP_0002715"
+    },
+    {
+     "sub": "http://purl.obolibrary.org/obo/HP_0001507",
+     "pred": "is_a",
+     "obj": "http://purl.obolibrary.org/obo/HP_0000118"
+    },
+    {
+     "sub": "http://purl.obolibrary.org/obo/HP_0001510",
+     "pred": "is_a",
+     "obj": "http://purl.obolibrary.org/obo/HP_0001507"
+    },
+    {
+     "sub": "http://purl.obolibrary.org/obo/HP_0001945",
+     "pred": "is_a",
+     "obj": "http://purl.obolibrary.org/obo/HP_0000118"
+    },
+    {
+     "sub": "http://purl.obolibrary.org/obo/HP_0002960",
+     "pred": "is_a",
+     "obj": "http://purl.obolibrary.org/obo/HP_0002715"
+    }
+   ]
+  }
+ ]
+}
