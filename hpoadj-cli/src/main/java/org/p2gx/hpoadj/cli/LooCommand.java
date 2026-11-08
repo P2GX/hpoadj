@@ -5,6 +5,7 @@ import org.p2gx.hpoadj.hpoa.HpoaFile;
 import org.p2gx.hpoadj.loo.CaseResult;
 import org.p2gx.hpoadj.loo.CaseStatus;
 import org.p2gx.hpoadj.loo.LeaveOneOutAdjuster;
+import org.p2gx.hpoadj.loo.MultiReferencePolicy;
 import org.p2gx.hpoadj.report.SummaryWriter;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -21,9 +22,15 @@ public class LooCommand extends BaseCommand {
 
     private static final Logger LOGGER = LoggerFactory.getLogger(LooCommand.class);
 
+    @CommandLine.Option(names = {"--multi-reference"},
+            description = "handling of lines that cite the publication together with other references: "
+                    + "${COMPLETION-CANDIDATES} (default: ${DEFAULT-VALUE})")
+    MultiReferencePolicy multiReferencePolicy = MultiReferencePolicy.SUBTRACT;
+
     @Override
     int execute(HpoaFile hpoa, PhenopacketCohort cohort) {
-        List<CaseResult> results = new LeaveOneOutAdjuster(hpoa, cohort).adjustAll(cohort.cases(), outputDirectory);
+        LeaveOneOutAdjuster adjuster = new LeaveOneOutAdjuster(hpoa, cohort, multiReferencePolicy);
+        List<CaseResult> results = adjuster.adjustAll(cohort.cases(), outputDirectory);
         Path summary = outputDirectory.resolve(SummaryWriter.ADJUSTMENT_SUMMARY);
         SummaryWriter.writeAdjustmentSummary(results, summary);
         LOGGER.info("Wrote adjustment summary to {}", summary);

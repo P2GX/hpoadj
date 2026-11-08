@@ -23,13 +23,16 @@ public class AugmentCommand extends BaseCommand {
     private static final Logger LOGGER = LoggerFactory.getLogger(AugmentCommand.class);
 
     @CommandLine.Option(names = {"--biocuration"},
-            description = "biocuration tag written to generated annotations, today's date is appended "
-                    + "(default: ${DEFAULT-VALUE})")
+            description = "biocuration tag written to generated annotations (default: ${DEFAULT-VALUE})")
     String biocurationTag = "HPO:hpoadj";
+
+    @CommandLine.Option(names = {"--date"},
+            description = "date appended to the biocuration tag, ISO format (default: today)")
+    LocalDate date = LocalDate.now();
 
     @Override
     int execute(HpoaFile hpoa, PhenopacketCohort cohort) {
-        String biocuration = biocurationTag + "[" + LocalDate.now() + "]";
+        String biocuration = biocurationTag + "[" + date + "]";
         AugmentedHpoa augmented = new HpoaAugmenter(cohort, biocuration).augment(hpoa);
         Path output = outputDirectory.resolve(OUTPUT_FILE);
         augmented.hpoa().write(output);
