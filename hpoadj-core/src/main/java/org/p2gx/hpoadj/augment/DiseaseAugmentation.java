@@ -9,5 +9,6 @@ public record DiseaseAugmentation(TermId diseaseId,
                                   List<TermId> cohortPmids,
                                   int linesAdded,
                                   int linesPooled,
-                                  int linesSuperseded) {
+                                  int linesSuperseded,
+                                  int linesRetainedBesideCohort) {
 }
