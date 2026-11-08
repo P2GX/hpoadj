@@ -19,15 +19,10 @@ import java.util.Set;
 import java.util.stream.Collectors;
 
 /**
- * Adds the annotations implied by a phenopacket cohort to an HPOA file: one line per disease and
- * observed term, with the frequency pooled over all cohort publications (ancestor-aware counting)
- * and every contributing PMID in the reference field. Existing annotations of the same disease are
- * superseded when they cite a publication the cohort re-curates, pooled into the cohort line when
- * they carry a poolable count, and kept otherwise.
+ * Adds one phenotype annotation per disease and observed term of a phenopacket cohort to an HPOA
+ * file, superseding or pooling the pre-existing phenotype annotations of those diseases.
  */
 public class HpoaAugmenter {
-
-    public static final String PROVENANCE_HEADER = "#cohort-augmented: ";
 
     private static final Logger LOGGER = LoggerFactory.getLogger(HpoaAugmenter.class);
 
@@ -61,10 +56,13 @@ public class HpoaAugmenter {
 
         List<HpoaAnnotationLine> lines = new ArrayList<>(retained);
         lines.addAll(generated);
-        String provenance = PROVENANCE_HEADER + diseases.stream()
+        String augmented = HpoaFile.AUGMENTED_DISEASES_HEADER + diseases.stream()
                 .map(TermId::getValue)
                 .collect(Collectors.joining(","));
-        return new AugmentedHpoa(new HpoaFile(base.headerLines(), lines).withHeaderLine(provenance), report);
+        HpoaFile hpoa = new HpoaFile(base.headerLines(), lines)
+                .withHeaderLine(HpoaFile.COHORT_BIOCURATION_HEADER + biocuration)
+                .withHeaderLine(augmented);
+        return new AugmentedHpoa(hpoa, report);
     }
 
     private DiseaseAugmentation augmentDisease(TermId diseaseId,
@@ -72,6 +70,7 @@ public class HpoaAugmenter {
                                                List<HpoaAnnotationLine> generated,
                                                List<HpoaAnnotationLine> retained) {
         Set<TermId> cohortPmids = cohort.pmidsOf(diseaseId);
+        Set<TermId> observed = cohort.observedTermsOf(diseaseId);
         CohortCounts counts = cohort.countsOf(diseaseId);
         String diseaseName = existing.stream()
                 .map(HpoaAnnotationLine::diseaseName)
@@ -79,43 +78,52 @@ public class HpoaAugmenter {
                 .findFirst()
                 .orElseGet(() -> cohort.diseaseNameOf(diseaseId));
 
-        Map<TermId, HpoaAnnotationLine> poolable = new LinkedHashMap<>();
+        Map<TermId, List<HpoaAnnotationLine>> poolable = new LinkedHashMap<>();
         int superseded = 0;
+        int retainedBesideCohort = 0;
         for (HpoaAnnotationLine line : existing) {
             if (!Collections.disjoint(line.references(), cohortPmids)) {
                 if (!cohortPmids.containsAll(line.references())) {
-                    LOGGER.warn("{} {}: dropping annotation with mixed provenance {}",
+                    LOGGER.warn("{} {}: superseding annotation with mixed provenance {}",
                             diseaseId, line.hpoId(), line.references());
                 }
                 superseded++;
-            } else if (line.poolableRatio().isPresent() && !poolable.containsKey(line.hpoId())) {
-                poolable.put(line.hpoId(), line);
-            } else {
+            } else if (!observed.contains(line.hpoId())) {
                 retained.add(line);
+            } else if (line.poolableRatio().isPresent()) {
+                poolable.computeIfAbsent(line.hpoId(), id -> new ArrayList<>()).add(line);
+            } else {
+                LOGGER.warn("{} {}: keeping {} annotation '{}' from {} beside the cohort annotation",
+                        diseaseId, line.hpoId(), line.negated() ? "negated" : "non-count",
+                        line.frequency(), line.references());
+                retained.add(line);
+                retainedBesideCohort++;
             }
         }
 
         int added = 0;
         int pooled = 0;
-        for (TermId hpoId : cohort.observedTermsOf(diseaseId)) {
+        for (TermId hpoId : observed) {
             Ratio frequency = counts.ratioOf(hpoId);
             Set<TermId> references = new LinkedHashSet<>(cohortPmids);
-            HpoaAnnotationLine existingLine = poolable.remove(hpoId);
-            if (existingLine != null) {
+            List<HpoaAnnotationLine> existingLines = poolable.getOrDefault(hpoId, List.of());
+            for (HpoaAnnotationLine existingLine : existingLines) {
                 frequency = frequency.plus(existingLine.poolableRatio().orElseThrow());
                 references.addAll(existingLine.references());
-                pooled++;
-            } else {
+            }
+            if (existingLines.isEmpty()) {
                 added++;
+            } else {
+                pooled += existingLines.size();
             }
             generated.add(HpoaAnnotationLine.phenotypeAnnotation(diseaseId, diseaseName, hpoId,
                     references, frequency, biocuration));
         }
-        retained.addAll(poolable.values());
 
-        LOGGER.info("{}: {} cohort phenopackets from {} publications, {} annotations added, {} pooled, {} superseded",
-                diseaseId, counts.cohortSize(), cohortPmids.size(), added, pooled, superseded);
+        LOGGER.info("{}: {} cohort phenopackets from {} publications, {} annotations added, {} pooled, "
+                        + "{} superseded, {} retained beside cohort annotations",
+                diseaseId, counts.cohortSize(), cohortPmids.size(), added, pooled, superseded, retainedBesideCohort);
         return new DiseaseAugmentation(diseaseId, counts.cohortSize(), List.copyOf(cohortPmids),
-                added, pooled, superseded);
+                added, pooled, superseded, retainedBesideCohort);
     }
 }

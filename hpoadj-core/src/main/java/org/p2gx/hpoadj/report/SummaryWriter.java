@@ -23,7 +23,8 @@ public final class SummaryWriter {
     public static void writeAugmentationSummary(List<DiseaseAugmentation> augmentations, Path path) {
         try (BufferedWriter writer = Files.newBufferedWriter(path)) {
             writeRow(writer, "disease_id", "cohort_size", "cohort_pmids",
-                    "annotations_added", "annotations_pooled", "annotations_superseded");
+                    "annotations_added", "annotations_pooled", "annotations_superseded",
+                    "annotations_retained_beside_cohort");
             for (DiseaseAugmentation augmentation : augmentations) {
                 writeRow(writer,
                         augmentation.diseaseId().getValue(),
@@ -31,7 +32,8 @@ public final class SummaryWriter {
                         augmentation.cohortPmids().stream().map(TermId::getValue).collect(Collectors.joining(";")),
                         String.valueOf(augmentation.linesAdded()),
                         String.valueOf(augmentation.linesPooled()),
-                        String.valueOf(augmentation.linesSuperseded()));
+                        String.valueOf(augmentation.linesSuperseded()),
+                        String.valueOf(augmentation.linesRetainedBesideCohort()));
             }
         } catch (IOException e) {
             throw new HpoadjException("Could not write " + path, e);
@@ -42,7 +44,7 @@ public final class SummaryWriter {
         try (BufferedWriter writer = Files.newBufferedWriter(path)) {
             writeRow(writer, "phenopacket_id", "pmid", "disease_id", "status",
                     "lines_removed_disease", "lines_subtracted_disease", "lines_removed_total",
-                    "lines_subtracted_total", "undecomposable_lines_removed",
+                    "lines_subtracted_total", "sole_support_removed_total", "undecomposable_removed_total",
                     "remaining_phenotype_lines", "adjusted_hpoa");
             for (CaseResult result : results) {
                 writeRow(writer,
@@ -54,7 +56,8 @@ public final class SummaryWriter {
                         String.valueOf(result.linesSubtractedForDisease()),
                         String.valueOf(result.linesRemovedTotal()),
                         String.valueOf(result.linesSubtractedTotal()),
-                        String.valueOf(result.undecomposableLinesRemoved()),
+                        String.valueOf(result.soleSupportRemovedTotal()),
+                        String.valueOf(result.undecomposableRemovedTotal()),
                         String.valueOf(result.remainingPhenotypeLines()),
                         result.adjustedHpoa().map(Path::toString).orElse("-"));
             }
