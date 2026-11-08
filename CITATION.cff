@@ -1,0 +1,25 @@
+cff-version: 1.2.0
+message: "If you use hpoadj, please cite it using these metadata."
+type: software
+title: "hpoadj: cohort augmentation and leave-one-publication-out for HPO annotation files"
+version: 0.0.2
+date-released: 2026-11-08
+license: Apache-2.0
+repository-code: "https://github.com/P2GX/hpoadj"
+url: "https://github.com/P2GX/hpoadj"
+abstract: >-
+  Adjusts HPO annotation files (phenotype.hpoa) for phenopacket-based benchmarking of
+  phenotype-driven diagnostic tools: adds the disease annotations implied by a curated
+  phenopacket cohort and removes, per publication, that publication's contribution so that
+  no individual contributes to the disease profile it is scored against.
+authors:
+  - family-names: Graefe
+    given-names: Adam
+    orcid: "https://orcid.org/0009-0004-8124-8864"
+    affiliation: "Berlin Institute of Health at Charité, Universitätsmedizin Berlin"
+keywords:
+  - Human Phenotype Ontology
+  - GA4GH Phenopackets
+  - benchmarking
+  - rare disease
+  - LIRICAL

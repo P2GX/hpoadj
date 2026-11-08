@@ -1,0 +1,27 @@
+{
+  "title": "hpoadj: cohort augmentation and leave-one-publication-out for HPO annotation files",
+  "upload_type": "software",
+  "license": "Apache-2.0",
+  "creators": [
+    {
+      "name": "Graefe, Adam",
+      "orcid": "0009-0004-8124-8864",
+      "affiliation": "Institute for Medical and Human Genetics, Charité Universitätsmedizin Berlin"
+    }
+  ],
+  "description": "Adjusts HPO annotation files (phenotype.hpoa) for phenopacket-based benchmarking of phenotype-driven diagnostic tools: adds the disease annotations implied by a curated GA4GH phenopacket cohort and removes, per publication, that publication's contribution so that no individual contributes to the disease profile it is scored against.",
+  "keywords": [
+    "Human Phenotype Ontology",
+    "GA4GH Phenopackets",
+    "benchmarking",
+    "rare disease",
+    "LIRICAL"
+  ],
+  "related_identifiers": [
+    {
+      "identifier": "https://github.com/P2GX/esid4hpo-analysis",
+      "relation": "isSupplementTo",
+      "scheme": "url"
+    }
+  ]
+}
