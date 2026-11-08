@@ -24,8 +24,16 @@ public record Ratio(int numerator, int denominator) {
         return new Ratio(numerator - other.numerator, denominator - other.denominator);
     }
 
+    public boolean isZero() {
+        return numerator == 0;
+    }
+
+    public boolean isConsistent() {
+        return numerator >= 0 && denominator >= numerator;
+    }
+
     public boolean isInformative() {
-        return numerator > 0 && denominator > 0 && numerator <= denominator;
+        return numerator > 0 && denominator >= numerator;
     }
 
     public String format() {

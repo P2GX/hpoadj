@@ -10,8 +10,12 @@ import java.nio.file.Files;
 import java.nio.file.Path;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 
 public class HpoaFile {
+
+    public static final String AUGMENTED_DISEASES_HEADER = "#cohort-augmented: ";
+    public static final String COHORT_BIOCURATION_HEADER = "#cohort-biocuration: ";
 
     private final List<String> headerLines;
     private final List<HpoaAnnotationLine> annotationLines;
@@ -51,6 +55,10 @@ public class HpoaFile {
         return annotationLines.size();
     }
 
+    public Optional<String> cohortBiocuration() {
+        return headerValue(COHORT_BIOCURATION_HEADER);
+    }
+
     public List<HpoaAnnotationLine> linesCiting(TermId reference) {
         return annotationLines.stream()
                 .filter(line -> line.cites(reference))
@@ -83,5 +91,12 @@ public class HpoaFile {
         } catch (IOException e) {
             throw new HpoadjException("Could not write HPOA file " + path, e);
         }
+    }
+
+    private Optional<String> headerValue(String prefix) {
+        return headerLines.stream()
+                .filter(line -> line.startsWith(prefix))
+                .map(line -> line.substring(prefix.length()).trim())
+                .findFirst();
     }
 }

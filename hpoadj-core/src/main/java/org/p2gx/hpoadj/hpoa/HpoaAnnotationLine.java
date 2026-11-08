@@ -16,7 +16,8 @@ public record HpoaAnnotationLine(String raw,
                                  TermId hpoId,
                                  List<TermId> references,
                                  String frequency,
-                                 String aspect) {
+                                 String aspect,
+                                 String biocuration) {
 
     public static final String PHENOTYPE_ASPECT = "P";
     public static final String NEGATION_QUALIFIER = "NOT";
@@ -48,7 +49,8 @@ public record HpoaAnnotationLine(String raw,
                 TermId.of(fields[HPO_ID]),
                 references,
                 fields[FREQUENCY],
-                fields[ASPECT]);
+                fields[ASPECT],
+                fields[BIOCURATION]);
     }
 
     public static HpoaAnnotationLine phenotypeAnnotation(TermId diseaseId,
@@ -86,14 +88,13 @@ public record HpoaAnnotationLine(String raw,
         return Ratio.parse(frequency);
     }
 
-    /**
-     * The count this line contributes when pooled with cohort counts: the explicit n/m, or 1/1
-     * (0/1 when negated) for a line without a frequency, which the HPOA convention and the phenol
-     * loader both read as a single case report. Percentages and HPO frequency terms cannot be pooled.
-     */
+    /** The explicit {@code n/m}, or {@code 1/1} for an observed annotation without a frequency, as phenol reads it. */
     public Optional<Ratio> poolableRatio() {
+        if (negated) {
+            return Optional.empty();
+        }
         if (frequency.isEmpty()) {
-            return Optional.of(new Ratio(negated ? 0 : 1, 1));
+            return Optional.of(new Ratio(1, 1));
         }
         return frequencyRatio();
     }

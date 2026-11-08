@@ -11,7 +11,8 @@ public record CaseResult(PhenopacketCase phenopacketCase,
                          int linesSubtractedForDisease,
                          int linesRemovedTotal,
                          int linesSubtractedTotal,
-                         int undecomposableLinesRemoved,
+                         int soleSupportRemovedTotal,
+                         int undecomposableRemovedTotal,
                          long remainingPhenotypeLines,
                          Optional<Path> adjustedHpoa) {
 }

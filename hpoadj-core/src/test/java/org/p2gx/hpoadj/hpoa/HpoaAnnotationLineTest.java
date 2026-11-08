@@ -22,6 +22,7 @@ public class HpoaAnnotationLineTest {
         assertEquals(TermId.of("HP:0002205"), line.hpoId());
         assertEquals(List.of(TermId.of("PMID:24136356"), TermId.of("PMID:24165795")), line.references());
         assertEquals(Optional.of(new Ratio(15, 17)), line.frequencyRatio());
+        assertEquals("HPO:probinson[2014-02-03]", line.biocuration());
         assertTrue(line.isPhenotypeAnnotation());
         assertEquals(LINE, line.raw());
     }
@@ -35,14 +36,17 @@ public class HpoaAnnotationLineTest {
     }
 
     @Test
-    public void lineWithoutFrequencyPoolsAsSingleCase() {
+    public void onlyObservedCountsAndEmptyFrequenciesArePoolable() {
         HpoaAnnotationLine observed = HpoaAnnotationLine.of(LINE.replace("15/17", ""));
-        HpoaAnnotationLine negated = HpoaAnnotationLine.of(LINE.replace("15/17", "").replace("\t\tHP:", "\tNOT\tHP:"));
+        HpoaAnnotationLine negated = HpoaAnnotationLine.of(LINE.replace("\t\tHP:", "\tNOT\tHP:"));
         HpoaAnnotationLine percent = HpoaAnnotationLine.of(LINE.replace("15/17", "88%"));
+        HpoaAnnotationLine frequencyTerm = HpoaAnnotationLine.of(LINE.replace("15/17", "HP:0040281"));
         assertEquals(Optional.empty(), observed.frequencyRatio());
         assertEquals(Optional.of(new Ratio(1, 1)), observed.poolableRatio());
-        assertEquals(Optional.of(new Ratio(0, 1)), negated.poolableRatio());
+        assertTrue(negated.negated());
+        assertEquals(Optional.empty(), negated.poolableRatio());
         assertEquals(Optional.empty(), percent.poolableRatio());
+        assertEquals(Optional.empty(), frequencyTerm.poolableRatio());
     }
 
     @Test
