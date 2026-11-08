@@ -5,6 +5,7 @@ title: "hpoadj: cohort augmentation and leave-one-publication-out for HPO annota
 version: 0.0.2
 date-released: 2026-11-08
 license: Apache-2.0
+doi: 10.5281/zenodo.24054540
 repository-code: "https://github.com/P2GX/hpoadj"
 url: "https://github.com/P2GX/hpoadj"
 abstract: >-

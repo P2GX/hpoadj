@@ -6,8 +6,8 @@
 [![Java](https://img.shields.io/badge/Java-21-blue.svg)](https://openjdk.org/projects/jdk/21/)
 [![HPO](https://img.shields.io/badge/HPO-Human%20Phenotype%20Ontology-purple.svg)](https://hpo.jax.org/)
 [![GA4GH](https://img.shields.io/badge/GA4GH-Phenopackets%20v2-orange.svg)](https://phenopacket-schema.readthedocs.io)
-[![phenol](https://img.shields.io/badge/built%20on-phenol-lightgrey.svg)](https://github.com/monarch-initiative/phenol)
 [![LIRICAL](https://img.shields.io/badge/benchmarks-LIRICAL-lightgrey.svg)](https://github.com/TheJacksonLaboratory/LIRICAL)
+[![DOI](https://zenodo.org/badge/DOI/10.5281/zenodo.24054540.svg)](https://doi.org/10.5281/zenodo.24054540)
 
 Adjusts HPO annotation files (`phenotype.hpoa`) for phenopacket-based benchmarking of
 phenotype-driven diagnostic tools such as [LIRICAL](https://github.com/TheJacksonLaboratory/LIRICAL).
